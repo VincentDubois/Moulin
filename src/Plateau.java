@@ -94,7 +94,6 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 
 
 	// transformation entre les coordonnées de l'écran et celles du jeu
-
 	private int getCoordX(int x){
 		return (x-min.x+1)*SIZE+SIZE/2;
 	}

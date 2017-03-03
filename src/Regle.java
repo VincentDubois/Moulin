@@ -11,6 +11,15 @@ public class Regle {
 		"les blancs ont gagné !"
 	};
 
+	public static final int VIDE = 0;
+	public static final int NOIR = 1;
+	public static final int BLANC = 2;
+	
+	public static final int POSE = 0;
+	public static final int MOUVEMENT = 1;
+	public static final int RETRAIT = 2;
+	public static final int GAGNE = 3;
+
 	public static class Position {
 		int x,y; // coordonnées
 		
@@ -70,8 +79,8 @@ public class Regle {
 		}
 		
 		resultat.coup = 1;
-		resultat.statut = 0;
-		resultat.joueur = 1;
+		resultat.statut = POSE;
+		resultat.joueur = NOIR;
 		
 /*		
  * plateau morpion
@@ -103,9 +112,6 @@ public class Regle {
 		return resultat;
 	}
 
-
-
-
 	public static boolean hasLink(Jeu jeu,int ndx1, int ndx2){
 		for (int i = 0; i < jeu.ligne.length; ++i){
 			for(int j = 1; j < jeu.ligne[i].length;++j){
@@ -122,7 +128,7 @@ public class Regle {
 	
 	public static boolean estDansMoulin(Jeu jeu, int ndx){
 		int couleur = jeu.position[ndx].contenu;
-		if (couleur == 0) return false;
+		if (couleur == VIDE) return false;
 
 		
 		for (int i = 0; i < jeu.ligne.length; ++i){
@@ -144,8 +150,8 @@ public class Regle {
 
 	
 	public static boolean canPlay(Jeu jeu, int ndx) {
-		if (jeu.statut != 0) return false;		
-		return jeu.position[ndx].contenu==0;
+		if (jeu.statut != POSE) return false;		
+		return jeu.position[ndx].contenu==VIDE;
 	}
 
 	public static void play(Jeu jeu, int ndx) {
@@ -155,27 +161,27 @@ public class Regle {
 	}
 
 	private static void testMoulin(Jeu jeu, int ndx) {
-		if (estDansMoulin(jeu,ndx)){
-			jeu.statut = 2;
-			if (!canRemove(jeu)){
-				finCoup(jeu);
+		if (estDansMoulin(jeu,ndx)){ // Est ce que l'on vient de compléter un moulin ?
+			jeu.statut = RETRAIT; // On retire
+			if (!canRemove(jeu)){ // Si ce n'est pas possible, 
+				finCoup(jeu);     // alors fin du tour.
 			}
 		} else {
-			finCoup(jeu);
+			finCoup(jeu); // fin du tour
 		}
 	}
 
 	private static void finCoup(Jeu jeu) {
-		jeu.joueur = 3 - jeu.joueur; // joueur suivant
+		jeu.joueur = (NOIR+BLANC) - jeu.joueur; // joueur suivant
 		
 		if (poseFinie(jeu)) { // est-ce que tous les pions sont posés ?
-			jeu.statut = 1;
+			jeu.statut = MOUVEMENT;
 			if (compte(jeu,jeu.joueur)<3 || !canMove(jeu)){ // le joueur a perdu
-				jeu.statut = 3;
-				jeu.joueur = 3 - jeu.joueur;
+				jeu.statut = GAGNE;
+				jeu.joueur = (NOIR+BLANC) - jeu.joueur;
 				return;
 			}
-		} else jeu.statut = 0;
+		} else jeu.statut = POSE;
 		
 		++jeu.coup;
 	}
@@ -203,27 +209,27 @@ public class Regle {
 	}
 
 	public static boolean canMove(Jeu jeu, int fromNdx, int toNdx) {
-		if (jeu.statut != 1) return false;		
+		if (jeu.statut != MOUVEMENT) return false;		
 		return jeu.position[fromNdx].contenu == jeu.joueur &&
-			   jeu.position[toNdx].contenu == 0  && hasLink(jeu, fromNdx,toNdx);
+			   jeu.position[toNdx].contenu == VIDE  && hasLink(jeu, fromNdx,toNdx);
 	}
 
 	public static void move(Jeu jeu, int fromNdx, int toNdx){
 		jeu.position[toNdx].contenu = jeu.position[fromNdx].contenu;
-		jeu.position[fromNdx].contenu = 0;
+		jeu.position[fromNdx].contenu = VIDE;
 
 		testMoulin(jeu,toNdx);
 	}
 
 
 	public static boolean canRemove(Jeu jeu, int ndx) {
-		if (jeu.statut != 2) return false;
+		if (jeu.statut != RETRAIT) return false;
 		if (estDansMoulin(jeu,ndx)) return false;
-		return jeu.position[ndx].contenu + jeu.joueur == 3;
+		return jeu.position[ndx].contenu + jeu.joueur == NOIR+BLANC;
 	}
 
 	public static void remove(Jeu jeu, int ndx) {
-		jeu.position[ndx].contenu = 0;
+		jeu.position[ndx].contenu = VIDE;
 		
 		finCoup(jeu);		
 	}
