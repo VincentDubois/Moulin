@@ -150,7 +150,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 
 		// Boucle sur les positions du jeu, pour dessiner les pions
 		for(int i = 0; i<jeu.position.length; ++i){
-			int type = jeu.position[i].contenu;
+			int type = Regle.get(jeu,i);
 			if (type !=0){
 				g.setColor(getTypeColor(type));
 				int x = getCoordX(jeu.position[i].x);
@@ -269,7 +269,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 
 		int ndx = getNdx(x,y);
 		if (ndx != -1 && !Regle.canPlay(jeu,ndx)){
-			dragColor = jeu.position[ndx].contenu;
+			dragColor = Regle.get(jeu, ndx);
 			dragStartNdx = ndx;
 			dragX = arg0.getX();
 			dragY = arg0.getY();

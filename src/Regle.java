@@ -21,8 +21,7 @@ public class Regle {
 	public static final int GAGNE = 3;
 
 	public static class Position {
-		int x,y; // coordonnées
-		
+		int x,y; // coordonnées		
 		int contenu; //contenu pour chaque position : 0=vide, 1=noir, 2=blanc 
 	}
 
@@ -124,6 +123,10 @@ public class Regle {
 			}
 		}
 		return false;
+	}
+	
+	public static int get(Jeu jeu, int ndx){
+		return jeu.position[ndx].contenu;
 	}
 	
 	public static boolean estDansMoulin(Jeu jeu, int ndx){
