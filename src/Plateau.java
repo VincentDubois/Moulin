@@ -81,7 +81,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 	public static void createMarelle(){
 		JFrame frame = new JFrame("Marelle");
 		try {
-			marelle = new Plateau(Regle.createMarelle());
+			marelle = new Plateau(Regle.createJeu());
 
 			frame.add(marelle,BorderLayout.CENTER);
 			label = new JLabel("",JLabel.CENTER);
@@ -229,7 +229,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 		
 		if (jeu.statut == 2){
 			for(int i = 0; i < jeu.position.length; ++i){
-				if (Regle.estDansMoulin(jeu, i)){
+				if (Regle.estDansLigneComplete(jeu, i)){
 					int x = getCoordX(jeu.position[i].x);
 					int y = getCoordY(jeu.position[i].y);
 					g.setColor(Color.LIGHT_GRAY);
