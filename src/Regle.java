@@ -286,10 +286,32 @@ public class Regle {
 	}
 
 
+	
+/////////////////////////////////////////////////////////
+////////////// Gestion de l'historique //////////////////
+/////////////////////////////////////////////////////////
+
+	public static Jeu getStart(Jeu jeu) {
+		return null;
+	}
+
+	public static Jeu getPrevious(Jeu jeu) {
+		return null;
+	}
+
+	public static Jeu getNext(Jeu jeu) {
+		return null;
+	}
+
+	public static Jeu getLast(Jeu jeu) {
+		return null;
+	}
+
+////////////////////// Main ////////////////////////////
+
 	public static void main(String[] arg){
 		Plateau.createMarelle();		
 	}
 
-
-
+	
 }

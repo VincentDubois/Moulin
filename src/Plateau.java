@@ -5,10 +5,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +32,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 
 	private int dragColor, dragStartNdx;
 	private int dragX,dragY;
+	private static Plateau marelle;
 
 	/***
 	 * Création du composant graphique représentant le jeu.
@@ -75,13 +80,46 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 	 */
 	public static void createMarelle(){
 		JFrame frame = new JFrame("Marelle");
-		Plateau marelle;
 		try {
 			marelle = new Plateau(Regle.createMarelle());
 
 			frame.add(marelle,BorderLayout.CENTER);
 			label = new JLabel("",JLabel.CENTER);
 			frame.add(label,BorderLayout.SOUTH);
+			Box hbox = Box.createHorizontalBox();
+			JButton buttonStart = new JButton("Début");
+			buttonStart.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {				
+					marelle.setJeu(Regle.getStart(marelle.jeu));
+				}				
+			});
+			JButton buttonPrevious = new JButton("Précédent");
+			buttonPrevious.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					marelle.setJeu(Regle.getPrevious(marelle.jeu));
+				}				
+			});
+			JButton buttonNext = new JButton("Suivant");
+			buttonNext.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					marelle.setJeu(Regle.getNext(marelle.jeu));
+				}				
+			});
+			JButton buttonLast = new JButton("Dernier");
+			buttonLast.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					marelle.setJeu(Regle.getLast(marelle.jeu));
+				}				
+			});
+			hbox.add(buttonStart);
+			hbox.add(buttonPrevious);
+			hbox.add(buttonNext);
+			hbox.add(buttonLast);
+			frame.add(hbox,BorderLayout.NORTH);
 			frame.pack();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
@@ -90,6 +128,15 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+
+
+	protected void setJeu(Regle.Jeu jeu) {
+		if (jeu == null) return;
+		this.jeu = jeu;
+		repaint();
+		showStatut();
+		
 	}
 
 
