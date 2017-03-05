@@ -284,8 +284,7 @@ public class Regle {
 
 
 	public static void main(String[] arg){
-		Plateau.createMarelle();
-		
+		Plateau.createMarelle();		
 	}
 
 

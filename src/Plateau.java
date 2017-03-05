@@ -152,7 +152,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 		for(int i = 0; i<jeu.position.length; ++i){
 			int type = jeu.position[i].contenu;
 			if (type !=0){
-				g.setColor(type == 2 ? Color.WHITE : Color.BLACK);
+				g.setColor(getTypeColor(type));
 				int x = getCoordX(jeu.position[i].x);
 				int y = getCoordY(jeu.position[i].y);
 				g.fillOval(x-DIAMETER/2, y-DIAMETER/2, DIAMETER ,DIAMETER);
@@ -174,7 +174,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 			}
 
 			// Affiche le pion en cours de déplacement
-			g.setColor(dragColor == 2 ? Color.WHITE : Color.BLACK);
+			g.setColor(getTypeColor(dragColor));
 			g.fillOval(dragX-DIAMETER/2, dragY-DIAMETER/2, DIAMETER ,DIAMETER);
 			g.setColor(Color.BLACK);
 			g.drawOval(dragX-DIAMETER/2, dragY-DIAMETER/2, DIAMETER ,DIAMETER);
@@ -191,6 +191,11 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 			}
 		}
 
+	}
+
+
+	private Color getTypeColor(int type) {
+		return type == Regle.BLANC ? Color.WHITE : Color.BLACK;
 	}
 
 
