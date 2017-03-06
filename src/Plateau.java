@@ -32,14 +32,17 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 
 	private int dragColor, dragStartNdx;
 	private int dragX,dragY;
+	private boolean debug;
 	private static Plateau marelle;
 
 	/***
 	 * Création du composant graphique représentant le jeu.
 	 * @param jeu
+	 * @param debug 
 	 * @throws Exception
 	 */
-	public Plateau(Regle.Jeu jeu) throws Exception{
+	public Plateau(Regle.Jeu jeu, boolean debug) throws Exception{
+		this.debug = debug;
 		// Quelques vérifications
 		if (jeu == null) throw new Exception("jeu should not be null");
 		if (jeu.position == null) throw new Exception("field position should not be null");
@@ -78,10 +81,15 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 	/***
 	 * Création de la fenêtre de jeu.
 	 */
-	public static void createMarelle(){
+	public static void createMarelle(boolean debug){
 		JFrame frame = new JFrame("Marelle");
 		try {
-			marelle = new Plateau(Regle.createJeu());
+			marelle = new Plateau(Regle.createJeu(),debug);
+			
+			if (debug){
+				Debug.create();
+				Debug.target(marelle.jeu);
+			}
 
 			frame.add(marelle,BorderLayout.CENTER);
 			label = new JLabel("",JLabel.CENTER);
@@ -124,6 +132,8 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 			marelle.showStatut();
+
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -250,7 +260,9 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 	 * Acualise la barre de statut
 	 */
 	private void showStatut() {		
-		label.setText(Regle.getStatus(jeu));		
+		label.setText(Regle.getStatus(jeu));
+		//Debug.target(marelle.jeu);
+		Debug.update();
 	}
 
 
