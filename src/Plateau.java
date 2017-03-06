@@ -262,7 +262,7 @@ public class Plateau extends JComponent implements MouseListener, MouseMotionLis
 	private void showStatut() {		
 		label.setText(Regle.getStatus(jeu));
 		//Debug.target(marelle.jeu);
-		Debug.update();
+		if (debug) Debug.update();
 	}
 
 
